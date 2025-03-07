@@ -26,7 +26,7 @@ if len(filter_cond_files) != 1:
     logging.critical("Must supply exactly one filter")
     sys.exit(1)
 
-from filter_cond_files import filter_cond_files
+from filter_cond import filter_cond
 
 
 #
