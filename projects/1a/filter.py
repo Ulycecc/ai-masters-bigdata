@@ -59,10 +59,10 @@ for line in sys.stdin:
 
     #unpack into a tuple/dict
     values = line.split('\t')
-    record = dict(zip(fields, values)) #Hotel(values)
+    record = dict(zip(fields, values)
 
     #apply filter conditions
-    if filter_cond(hotel_record):
+    if filter_cond(record):
         output = ",".join([record[x] for x in outfields])
         print(output)
 
