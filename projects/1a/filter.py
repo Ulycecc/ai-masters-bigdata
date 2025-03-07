@@ -6,7 +6,7 @@ from glob import glob
 import logging
 
 sys.path.append('.')
-from model import fields
+from model import fields, numeric_features
 
 #
 # Init the logger
