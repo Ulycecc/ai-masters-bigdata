@@ -26,13 +26,8 @@ if len(filter_cond_files) != 1:
     logging.critical("Must supply exactly one filter")
     sys.exit(1)
 
-exec(open(filter_cond_files[0]).read())
+from filter_cond_files import filter_cond_files
 
-#
-# dataset fields
-#
-#fields = """doc_id,hotel_name,hotel_url,street,city,state,country,zip,class,price,
-#num_reviews,CLEANLINESS,ROOM,SERVICE,LOCATION,VALUE,COMFORT,overall_ratingsource""".replace("\n",'').split(",")
 
 #
 # Optional argument
@@ -42,7 +37,7 @@ exec(open(filter_cond_files[0]).read())
 
 if len(sys.argv) == 1:
   #by default print all fields
-  outfields = fields
+  outfields = ["id", "label"] + numeric_features
 else:
   op, field = sys.argv[1][0], sys.argv[1][1:]
   logging.info(f"OP {op}")
@@ -57,20 +52,18 @@ else:
     outfields = list(fields) # like deepcopy, but on the first level only!
     outfields.remove(field)
 
-
-
 for line in sys.stdin:
     # skip header
     if line.startswith(fields[0]):
         continue
 
     #unpack into a tuple/dict
-    values = line.rstrip().split(',')
-    hotel_record = dict(zip(fields, values)) #Hotel(values)
+    values = line.split('\t')
+    record = dict(zip(fields, values)) #Hotel(values)
 
     #apply filter conditions
     if filter_cond(hotel_record):
-        output = ",".join([hotel_record[x] for x in outfields])
+        output = ",".join([record[x] for x in outfields])
         print(output)
 
 
